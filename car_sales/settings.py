@@ -149,8 +149,19 @@ import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+# Cloudinary
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dlcktsdfu',   # твой Cloud Name
+    'API_KEY': '621227364419683', # твой API Key
+    'API_SECRET': '7CSJvk0N2yfmIdb4WRH3w5cd8sM', # твой API Secret
+}
 
-# Настройки для медиа файлов
+# Использовать Cloudinary для хранения медиа файлов
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# MEDIA_URL оставляем для совместимости
 MEDIA_URL = '/media/'
+
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
