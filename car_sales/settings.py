@@ -83,10 +83,14 @@ WSGI_APPLICATION = 'car_sales.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+import dj_database_url
+import os
+
 DATABASES = {
     'default': dj_database_url.config(
-        default='sqlite:///db.sqlite3',
-        conn_max_age=600
+        default='postgresql://car_sales_db_y6s2_user:ed645C8Vbk6ODy4GuS4yXZDBeU7dpIWL@dpg-d41r9heuk2gs738l476g-a/car_sales_db_y6s2',
+        conn_max_age=600,
+        ssl_require=True
     )
 }
 
