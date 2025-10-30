@@ -69,9 +69,9 @@ smmap==5.0.2
 sqlparse==0.5.3
 streamlit==1.49.1
 tenacity==9.1.2
-tensorboard==2.19.0
+tensorboard==2.20.0
 tensorboard-data-server==0.7.2
-tensorflow==2.19.0
+tensorflow==2.20.0
 termcolor==3.0.1
 threadpoolctl==3.6.0
 tkintervideo==0.0.2
