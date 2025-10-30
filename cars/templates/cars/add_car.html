@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Добавить автомобиль</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f5f7fa;
+            margin: 0;
+            padding: 0;
+        }
+        .add-car-form {
+            background: #fff;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #222;
+        }
+        h3 {
+            color: #444;
+            margin-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .flex-line {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+        .flex-line select,
+        .flex-line input {
+            flex: 1;
+            min-width: 180px;
+        }
+        .success-message {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 25px;
+            text-align: center;
+        }
+        .recommendations {
+            margin-top: 25px;
+            background: #fefefe;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+        }
+        small {
+            color: gray;
+            display: block;
+            margin-top: 6px;
+        }
+
+        /* Скрываем поле расхода топлива */
+        #id_fuel_consumption,
+        label[for="id_fuel_consumption"] {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+{% block content %}
+<div class="add-car-form">
+    <h2>Добавить новый автомобиль</h2>
+
+    <!-- 🔹 Одна форма: выбор, ввод ID, автозаполнение -->
+    <form method="get" id="carSelectForm" action="">
+        <h3>🔍 Найти или выбрать автомобиль</h3>
+        <div class="flex-line">
+            <!-- Список последних машин -->
+            <select name="car_id" id="car_id_select">
+                <option value="">— Из базы (последние 5) —</option>
+                {% for c in last_cars %}
+                    <option value="{{ c.id }}" {% if selected_car and selected_car.id == c.id %}selected{% endif %}>
+                        ID {{ c.id }} — {{ c.make }} {{ c.model }} ({{ c.color }})
+                    </option>
+                {% endfor %}
+            </select>
+
+            <!-- Ввод ID вручную -->
+            <input type="number" id="manual_id" name="manual_car_id" placeholder="Введите ID вручную">
+
+            <!-- Автозаполнение -->
+            <select id="auto_fill" onchange="fillCarData(this)">
+                <option value="">Автозаполнить</option>
+                {% for c in last_cars %}
+                    <option value="{{ c.id }}" data-make="{{ c.make }}" data-model="{{ c.model }}" data-color="{{ c.color }}">
+                        {{ c.make }} {{ c.model }} ({{ c.color }})
+                    </option>
+                {% endfor %}
+            </select>
+
+            <!-- Кнопка показать -->
+            <button type="button" id="showBtn">Показать</button>
+        </div>
+        <small>Выберите из списка, введите ID или используйте автозаполнение.</small>
+    </form>
+
+    <!-- 🔹 Основная форма -->
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+                <small>{{ field.help_text }}</small>
+            {% endif %}
+            {% for error in field.errors %}
+                <small style="color:red">{{ error }}</small>
+            {% endfor %}
+        </div>
+        {% endfor %}
+
+        <button type="submit">Добавить автомобиль</button>
+    </form>
+
+    {% if message %}
+    <div class="success-message">
+        <h2>{{ message }}</h2>
+        <button onclick="window.location.href='/add/'">Добавить еще</button>
+        <button onclick="window.location.href='/'">На главную</button>
+    </div>
+    {% endif %}
+
+    {% if recommended_cars %}
+    <div class="recommendations">
+        <h3>Похожие автомобили:</h3>
+        <ul>
+            {% for car in recommended_cars %}
+                <li>{{ car.make }} {{ car.model }} — {{ car.color }} — {{ car.price }} $</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+// --- При выборе из списка ---
+document.getElementById('car_id_select').addEventListener('change', function() {
+    const id = this.value;
+    if (id) {
+        window.location.href = `/add/?car_id=${id}`;
+    }
+});
+
+// --- При вводе ID вручную ---
+document.getElementById('showBtn').addEventListener('click', function() {
+    const manualId = document.getElementById('manual_id').value.trim();
+    if (manualId) {
+        window.location.href = `/add/?car_id=${manualId}`;
+    } else {
+        alert("Введите ID автомобиля!");
+    }
+});
+
+// --- Автозаполнение марки, модели, цвета ---
+function fillCarData(select) {
+    const option = select.options[select.selectedIndex];
+    if (option && option.value) {
+        document.getElementById('id_make').value = option.dataset.make || '';
+        document.getElementById('id_model').value = option.dataset.model || '';
+        document.getElementById('id_color').value = option.dataset.color || '';
+    }
+}
+</script>
+{% endblock %}
+</body>
+</html>

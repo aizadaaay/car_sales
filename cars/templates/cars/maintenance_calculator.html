@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+ {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+<head>
+    <meta charset="UTF-8">
+    <title>Калькулятор расходов на содержание</title>
+</head>
+<body>
+    <h1>Рассчитать расходы на содержание автомобиля</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label>Расход топлива (л/100 км): <input type="number" step="0.1" name="fuel_consumption" required></label><br>
+        <label>Цена топлива за литр: <input type="number" step="0.01" name="fuel_price" required></label><br>
+        <label>Пробег за год (км): <input type="number" name="distance_per_year" required></label><br>
+        <label>Налог: <input type="number" step="0.01" name="tax_rate" required></label><br>
+        <label>Страховка: <input type="number" step="0.01" name="insurance_rate" required></label><br>
+        <button type="submit">Рассчитать</button>
+    </form>
+<a href="{% url 'home' %}" class="btn btn-secondary">Басты бет оралу </a>
+</body>
+</html>

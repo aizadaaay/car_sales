@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Предсказание цены авто</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            width: 100%;
+            text-align: left;
+            margin: 10px 0 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            text-decoration: none;
+            background: #6c757d;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Введите параметры авто</h2>
+        <form id="predict-form" method="post">
+            {% csrf_token %}
+            <label>Год выпуска:</label>
+            <input type="number" name="year" required>
+
+            <label>Пробег:</label>
+            <input type="number" name="mileage" required>
+
+            <label>Объем двигателя (л):</label>
+            <input type="text" name="engine_size" required>
+
+            <label>Марка:</label>
+            <input type="text" name="brand" required>
+
+            <label>Модель:</label>
+            <input type="text" name="model" required>
+
+            <label>Кузов:</label>
+            <select name="body_type" required>
+                <option value="Кроссовер">Кроссовер</option>
+                <option value="Седан">Седан</option>
+                <option value="Универсал">Универсал</option>
+                <option value="Хэтчбек">Хэтчбек</option>
+                <option value="Фургон">Фургон</option>
+                <option value="Внедорожник">Внедорожник</option>
+                <option value="Минивэн">Минивэн</option>
+                <option value="Лифтбек">Лифтбек</option>
+                <option value="Пикап">Пикап</option>
+                <option value="Купе">Купе</option>
+            </select>
+
+            <label>Коробка передач:</label>
+            <select name="transmission" required>
+                <option value="Автомат">Автомат</option>
+                <option value="Механика">Механика</option>
+                <option value="Вариатор">Вариатор</option>
+                <option value="Робот">Робот</option>
+            </select>
+
+            <label>Привод:</label>
+            <select name="drive" required>
+                <option value="Полный привод">Полный привод</option>
+                <option value="Передний привод">Передний привод</option>
+                <option value="Задний привод">Задний привод</option>
+            </select>
+
+            <label>Цвет:</label>
+            <input type="text" name="color" required>
+
+            <label>Руль:</label>
+            <select name="wheel" required>
+                <option value="Слева">Слева</option>
+                <option value="Справа">Справа</option>
+            </select>
+
+            <label>Объем двигателя (тип):</label>
+            <select name="engine_type" required>
+                <option value="гибрид">Гибрид</option>
+                <option value="бензин">Бензин</option>
+                <option value="газ-бензин">Газ-бензин</option>
+                <option value="Не указано">Не указано</option>
+                <option value="дизель">Дизель</option>
+                <option value="газ">Газ</option>
+            </select>
+
+            <button type="submit">Предсказать</button>
+        </form>
+
+        {% if predicted_price is not None %}
+            <h3 id="result">Предсказанная цена: {{ predicted_price|floatformat:2 }} тенге</h3>
+        {% endif %}
+
+        <a href="{% url 'home' %}" class="btn-secondary">Басты бет оралу</a>
+    </div>
+</body>
+</html>

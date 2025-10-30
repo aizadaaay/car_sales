@@ -1,0 +1,51 @@
+{% load static %}  <!-- Загружаем статические файлы (если используются изображения, стили и т.д.) -->
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детальная информация о автомобиле</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Пример подключения стилей -->
+</head>
+<body>
+    <header>
+        <h1>Детальная информация о {{ car.make }} {{ car.model }}</h1>
+        <nav>
+            <a href="/">Главная</a> |
+            <a href="/cars/">Каталог автомобилей</a> |
+            <a href="/about/">О нас</a> |
+            <a href="/contact/">Контакты</a>
+        </nav>
+    </header>
+
+    <section class="car-detail">
+        <div class="car-image">
+            <!-- Пример отображения изображения автомобиля -->
+            <img src="{% static 'images/car-placeholder.jpg' %}" alt="Изображение {{ car.make }} {{ car.model }}">
+        </div>
+
+        <div class="car-info">
+            <h2>{{ car.make }} {{ car.model }} ({{ car.year }})</h2>
+            <p><strong>Цена:</strong> {{ car.price }} USD</p>
+            <p><strong>Пробег:</strong> {{ car.mileage }} км</p>
+            <p><strong>Цвет:</strong> {{ car.color }}</p>
+            <p><strong>Двигатель:</strong> {{ car.engine_size }} л</p>
+            <p><strong>Тип трансмиссии:</strong> {{ car.transmission }}</p>
+            <p><strong>Дата регистрации:</strong> {{ car.registration_date }}</p>
+            <p><strong>Номер VIN:</strong> {{ car.vin }}</p>
+            <p><strong>Лицензионный номер:</strong> {{ car.license_plate }}</p>
+            <p><strong>Местоположение:</strong> {{ car.location }}</p>
+        </div>
+
+        <div class="car-actions">
+            <a href="/test-drive/{{ car.id }}/" class="btn">Записаться на тест-драйв</a>
+            <a href="/contact/" class="btn">Связаться с продавцом</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Car Sales. Все права защищены.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Продажа автомобилей</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f8f8;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        h1 {
+            margin: 0;
+        }
+
+        /* Бургер-меню */
+        .menu-toggle {
+            display: none; /* Скрыто по умолчанию */
+            font-size: 30px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+        nav ul li {
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block; /* Показываем бургер-меню */
+            }
+            nav ul {
+                display: none;
+                flex-direction: column;
+                background: #222;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                text-align: center;
+                padding: 10px 0;
+            }
+            nav ul.active {
+                display: flex;
+            }
+            nav ul li {
+                padding: 10px 0;
+            }
+        }
+        .container {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 64px 24px;
+    margin-top: 40px;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Фиксируем 5 колонок */
+    grid-gap: 62px;
+    width: 100%;
+    justify-content: center;
+}
+
+@media (max-width: 1200px) {
+    .card-grid {
+        grid-template-columns: repeat(3, 1fr); /* 3 колонки на средних экранах */
+    }
+}
+
+@media (max-width: 768px) {
+    .card-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 колонки на мобильных */
+    }
+}
+
+@media (max-width: 480px) {
+    .card-grid {
+        grid-template-columns: repeat(1, 1fr); /* 1 колонка на маленьких экранах */
+    }
+}
+
+
+
+.card {
+    position: relative;
+    text-decoration: center;
+    max-width: 300px; /* Ограничение по ширине */
+    width: 100%;
+}
+
+.card:before {
+    content: '';
+    display: block;
+    padding-bottom: 240%;
+    width: 250%;
+}
+
+.background {
+    background-position: center;
+    background-size: cover;
+    border-radius: 10px;
+    bottom: 0;
+    filter: brightness(0.75) saturate(1.2) contrast(0.85);
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: filter 200ms linear, transform 200ms linear;
+}
+
+.card:hover .background {
+    transform: scale(1.05);
+    filter: none;
+}
+
+.card-grid:hover > .card:not(:hover) .background {
+    filter: brightness(0.6) saturate(1) contrast(1.2) blur(5px);
+}
+
+.content {
+    padding: 32px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.category, .heading {
+    color: #e1e1e1;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.popular-cars {
+    max-width: 100%;
+    width: 100%;
+    position: center;
+}
+
+/* Фон с видео */
+.video-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+}
+.video-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+/* Контакты фиксированные внизу */
+.contacts {
+    display: flex;
+    gap: 20px;
+    position: fixed; /* Фиксируем контакты */
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000; /* Поверх всех элементов */
+}
+
+/* Контактные блоки */
+.contact-item {
+    text-align: center;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* Стили для ссылок */
+.contact-item a {
+    text-decoration: none;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+body {
+    padding-bottom: 180px; /* Учитываем высоту контактного блока */
+}
+
+/* Иконки */
+.contact-item i {
+    font-size: 50px;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.quote-section {
+        text-align: center;
+        padding: 40px 20px;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        font-size: 24px;
+        font-style: italic;
+        margin-top: 40px;
+        border-radius: 10px;
+    }
+    .quote-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+.empty-section {
+    height: 100vh;
+    background: transparent;
+}
+
+    </style>
+</head>
+<body>
+<!-- Фоновое видео -->
+    <div class="video-container">
+        <video autoplay loop muted playsinline>
+            <source src="{% static 'videos//car1.mp4' %}" type="video/mp4">
+            Ваш браузер не поддерживает видео.
+        </video>
+    </div>
+
+
+
+    <header>
+        <h1>Продажа автомобилей</h1>
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+        <nav>
+            <ul id="menu">
+                <li><a href="/cars/">Каталог</a></li>
+                <li><a href="{% url 'credit_calculator' %}">Кредит</a></li>
+                <li><a href="/prediction/">Прогноз</a></li>
+                <li><a href="/about/">О нас</a></li>
+                <li><a href="/contact/">Контакты</a></li>
+                <li><a href="{% url 'add_car' %}">Добавить</a></li>
+            </ul>
+        </nav>
+    </header>
+
+
+
+
+
+    <section class="container">
+    <h2>Наши популярные автомобили</h2>
+    <div class="card-grid">
+        {% for car in cars %}
+        <a class="card" href="/cars/{{ car.id }}/">
+            <div class="background" style="background-image: url('{{ car.image.url }}')">
+            </div>
+            <div class="content">
+                <p class="category">{{ car.make }}</p>
+                <h3 class="heading">{{ car.model }}</h3>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="empty-section"></section>
+
+<section class="quote-section">
+    <div class="quote-container">
+        <p class="quote-text">"Автомобиль — это не просто средство передвижения, а отражение вашей личности и стиля."</p>
+    </div>
+</section>
+
+<footer>
+    <div class="contacts">
+    <div class="contact-item">
+        <a href="https://wa.me//+77079707065" target="_blank">
+            <i class="fab fa-whatsapp"></i>
+            <p>WhatsApp</p>
+        </a>
+    </div>
+    <div class="contact-item">
+        <a href="https://www.instagram.com/nurdau.lett?igsh=OWtuZDZjcjJzMmo0&utm_source=qr" target="_blank">
+            <i class="fab fa-instagram"></i>
+            <p>Instagram</p>
+        </a>
+    </div>
+    
+</div>
+</footer>
+
+
+<script>
+        function toggleMenu() {
+            document.getElementById("menu").classList.toggle("active");
+        }
+    </script>
+</body>
+</html>

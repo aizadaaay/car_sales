@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+     {% load static %}
+
+
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Продажа автомобилей</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Главная</a></li>
+                <li><a href="/cars/">Каталог автомобилей</a></li>
+                <li><a href="/about/">О нас</a></li>
+                <li><a href="/contact/">Контакты</a></li>
+                <li><a href="{% url 'add_car' %}">Добавить автомобиль</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="popular-cars">
+        <h2>Популярные автомобили</h2>
+        <ul>
+            {% for car in cars %}
+                <li>
+                    <a href="/cars/{{ car.id }}/">
+                        <img src="{{ car.image.url }}" alt="{{ car.make }} {{ car.model }}">
+                        <p>{{ car.make }} {{ car.model }} ({{ car.year }})</p>
+                        <p>Цена: {{ car.price }} $</p>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+
+</body>
+</html>

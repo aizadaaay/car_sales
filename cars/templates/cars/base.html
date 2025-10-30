@@ -1,0 +1,9 @@
+{% extends 'cars/home.html' %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+    <h2>Добро пожаловать на Car Sales</h2>
+    <p>Найдите идеальный автомобиль для себя или пройдите тест-драйв, чтобы узнать больше.</p>
+    <a href="{% url 'car_list' %}" class="button">Посмотреть автомобили</a>
+{% endblock %}

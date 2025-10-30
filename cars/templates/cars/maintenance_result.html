@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+<head>
+    <meta charset="UTF-8">
+    <title>Результаты расчета расходов</title>
+</head>
+<body>
+    <h1>Результаты расчета расходов</h1>
+
+    {% if costs %}
+        <p>Расходы на топливо: {{ costs.Расходы на топливо }} $</p>
+        <p>Налог: {{ costs.Налог }} $</p>
+        <p>Страховка: {{ costs.Страховка }} $</p>
+        <p>Суммарные расходы: {{ costs.Суммарные расходы }} $</p>
+    {% else %}
+        <p>Данные для расчета не были переданы.</p>
+    {% endif %}
+
+    <a href="{% url 'home' %}" class="btn btn-secondary">Басты бет оралу </a>
+</body>
+</html>

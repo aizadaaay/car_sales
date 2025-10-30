@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог автомобилей</title>
+</head>
+<body>
+    <header>
+        <h1>Каталог автомобилей</h1>
+    </header>
+
+    <section class="filters">
+        <form method="get">
+            <input type="text" name="make" placeholder="Марка">
+            <input type="number" name="year" placeholder="Год выпуска">
+            <input type="number" name="price" placeholder="Максимальная цена">
+            <button type="submit">Фильтровать</button>
+        </form>
+    </section>
+
+    <section class="cars">
+        <ul>
+            {% for car in cars %}
+                <li>
+                    <a href="/cars/{{ car.id }}/">
+                        <img src="{{ car.image.url }}" alt="{{ car.make }} {{ car.model }}">
+                        <p>{{ car.make }} {{ car.model }} ({{ car.year }})</p>
+                        <p>Цена: {{ car.price }} $</p>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+
+</body>
+</html>

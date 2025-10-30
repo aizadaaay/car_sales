@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакты</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .background {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            top: 0;
+            left: 0;
+        }
+
+        .wave {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border-radius: 50%;
+            filter: blur(50px);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 10%, transparent 80%);
+            transform: translate(-50%, -50%);
+            animation: waveAnimation 8s infinite ease-in-out alternate;
+        }
+
+        .wave.wave2 {
+            animation-delay: 2s;
+            width: 140vw;
+            height: 140vh;
+            opacity: 0.5;
+            animation-duration: 10s;
+        }
+
+        .wave.wave3 {
+            animation-delay: 4s;
+            width: 160vw;
+            height: 160vh;
+            opacity: 0.3;
+            animation-duration: 12s;
+        }
+
+        @keyframes waveAnimation {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            25% { transform: translate(-50%, -50%) scale(1.1) translate(-30px, 15px); }
+            50% { transform: translate(-50%, -50%) scale(1.2) translate(20px, -10px); }
+            75% { transform: translate(-50%, -50%) scale(1.1) translate(-20px, 30px); }
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.7);
+            text-align: center;
+            padding: 20px;
+            width: 90%;
+            max-width: 900px;
+            margin: 40px auto 20px auto;
+            border-radius: 10px;
+        }
+
+        h1, h2, h3 {
+            color: #fff;
+        }
+
+        p {
+            color: #ccc;
+        }
+
+        section {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            padding-bottom: 240px; /* Отступ снизу для фиксированного блока */
+        }
+
+        form {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: #007bff;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 30px;
+            background: none;
+            border: none;
+            color: white;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            cursor: pointer;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 0;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            nav ul {
+                display: none;
+                flex-direction: column;
+                background: rgba(0, 0, 0, 0.8);
+                position: absolute;
+                top: 60px;
+                width: 100%;
+                left: 0;
+                padding: 10px 0;
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            nav ul li {
+                padding: 10px 0;
+            }
+        }
+
+        .fixed-contacts {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            color: white;
+            text-align: center;
+            padding: 15px 10px;
+            font-size: 14px;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background">
+        <div class="wave wave1"></div>
+        <div class="wave wave2"></div>
+        <div class="wave wave3"></div>
+    </div>
+
+    <header>
+        <h1>Связаться с нами</h1>
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+        <nav>
+            <ul id="menu">
+                <li><a href="{% url 'home' %}">Главная</a></li>
+                <li><a href="/cars/">Каталог</a></li>
+                <li><a href="{% url 'credit_calculator' %}">Кредит</a></li>
+                <li><a href="/prediction/">Прогноз</a></li>
+                <li><a href="/about/">О нас</a></li>
+                <li><a href="/contact/">Контакты</a></li>
+                <li><a href="{% url 'add_car' %}">Добавить</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section>
+        <h2>Мы всегда рады помочь!</h2>
+        <p>Если у вас есть вопросы или нужна информация — свяжитесь с нами:</p>
+
+        <h3>Форма обратной связи:</h3>
+        <form id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+            <input type="hidden" name="access_key" value="4a628301-da20-4a5a-a0df-4f480ec8d7e3">
+
+            <label for="name">Имя:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="message">Сообщение:</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+
+            <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+            <button type="submit">Отправить сообщение</button>
+            <p id="form-message" style="display:none; color: lightgreen; margin-top: 10px;">Сообщение успешно отправлено!</p>
+        </form>
+    </section>
+
+    <!-- Фиксированный блок контактов -->
+    <div class="fixed-contacts">
+        <h3>Наши контакты:</h3>
+        <p><strong>Адрес:</strong> проспект Достык 50, Алматы, Казахстан</p>
+        <p><strong>Телефон:</strong> +7 (707) 970-7065</p>
+        <p><strong>Email:</strong> aserikov748@gmail.com</p>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById("menu").classList.toggle("active");
+        }
+
+        document.getElementById('contact-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    form.reset();
+                    document.getElementById('form-message').style.display = 'block';
+                } else {
+                    alert("Ошибка при отправке. Попробуйте снова.");
+                }
+            })
+            .catch(error => {
+                alert("Ошибка сети. Проверьте подключение.");
+                console.error('Ошибка:', error);
+            });
+        });
+    </script>
+
+</body>
+</html>

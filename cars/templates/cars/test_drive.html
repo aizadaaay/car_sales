@@ -1,0 +1,164 @@
+<!-- cars/templates/cars/test_drive.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <<title>Тест-драйв: {{ car.make }} {{ car.model }}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        h1 {
+            margin: 0;
+        }
+
+        /* Бургер-меню */
+        .menu-toggle {
+            display: none;
+            font-size: 30px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+        nav ul li {
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            nav ul {
+                display: none;
+                flex-direction: column;
+                background: #222;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                text-align: center;
+                padding: 10px 0;
+            }
+            nav ul.active {
+                display: flex;
+            }
+            nav ul li {
+                padding: 10px 0;
+            }
+        }
+
+        /* Форма */
+        .form-container {
+            width: 90%;
+            max-width: 500px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .form-container input, .form-container button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .form-container button {
+            background: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Тест-драйв: {{ car.make }} {{ car.model }}</h1>
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+        <nav>
+            <ul id="menu">
+                <li><a href="{% url 'home' %}">Главная</a></li>
+                <li><a href="/cars/">Каталог</a></li>
+                <li><a href="{% url 'credit_calculator' %}">Кредит</a></li>
+                <li><a href="/prediction/">Прогноз</a></li>
+                <li><a href="/about/">О нас</a></li>
+                <li><a href="/contact/">Контакты</a></li>
+                <li><a href="{% url 'add_car' %}">Добавить</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="form-container">
+        <p>Пожалуйста, заполните форму ниже, чтобы записаться на тест-драйв для {{ car.make }} {{ car.model }}.</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <label for="name">Ваше имя:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Ваш Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Ваш телефон:</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <label for="date">Желаемая дата:</label>
+            <input type="date" id="date" name="date" required>
+            
+
+
+
+
+            <button type="submit">Записаться на тест-драйв</button>
+        </form>
+        {% if success %}
+    <div style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin-top: 15px;">
+        ✅ Ваша заявка успешно отправлена! Мы скоро свяжемся с вами.
+    </div>
+{% endif %}
+
+
+        
+        <a href="{% url 'home' %}" class="btn btn-secondary">Басты бет оралу</a>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById("menu").classList.toggle("active");
+        }
+    </script>
+
+</body>
+</html>

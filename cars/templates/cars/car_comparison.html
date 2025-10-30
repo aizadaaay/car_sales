@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Сравнение автомобилей</title>
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background: #f2f2f2;
+            color: #333;
+        }
+
+        header, footer {
+            background-color: #1f1f1f;
+            color: #fff;
+            padding: 15px 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 26px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 10px 0 0 0;
+            padding: 0;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+        }
+
+        nav ul li a:hover {
+            background-color: #444;
+        }
+
+        table {
+            width: 100%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #333;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .btn {
+            display: inline-block;
+            margin: 20px auto;
+            padding: 12px 24px;
+            background: #1f1f1f;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #444;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 18px;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            nav ul {
+                display: none;
+                flex-direction: column;
+                background: #1f1f1f;
+                width: 100%;
+                padding: 0;
+                margin: 0;
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            nav ul li {
+                text-align: center;
+                padding: 10px 0;
+            }
+
+            table {
+                font-size: 13px;
+                width: 100%;
+                overflow-x: auto;
+                display: block;
+            }
+
+            th, td {
+                white-space: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Сравнение автомобилей</h1>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <nav>
+        <ul id="menu">
+            <li><a href="{% url 'home' %}">Главная</a></li>
+            <li><a href="/cars/">Каталог</a></li>
+            <li><a href="{% url 'credit_calculator' %}">Кредит</a></li>
+            <li><a href="/prediction/">Прогноз</a></li>
+            <li><a href="/about/">О нас</a></li>
+            <li><a href="/contact/">Контакты</a></li>
+            <li><a href="{% url 'add_car' %}">Добавить</a></li>
+        </ul>
+    </nav>
+</header>
+
+<table>
+    <thead>
+        <tr>
+            <th>Марка</th>
+            <th>Модель</th>
+            <th>Цена</th>
+            <th>Цвет</th>
+            <th>Двигатель</th>
+            <th>Трансмиссия</th>
+            <th>Дата регистрации</th>
+            <th>VIN</th>
+            <th>Лицензия</th>
+            <th>Местоположение</th>
+            <th>Пробег</th>
+            <th>История</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for car in cars %}
+        <tr>
+            <td>{{ car.make }}</td>
+            <td>{{ car.model }}</td>
+            <td>{{ car.price }} $</td>
+            <td>{{ car.color }}</td>
+            <td>{{ car.engine_size }} л</td>
+            <td>{{ car.transmission }}</td>
+            <td>{{ car.registration_date }}</td>
+            <td>{{ car.vin }}</td>
+            <td>{{ car.license_plate }}</td>
+            <td>{{ car.location }}</td>
+            <td>{{ car.mileage }} км</td>
+            <td>{{ car.history|default:"Нет данных" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'home' %}" class="btn">Басты бетке оралу</a>
+
+<footer>
+    <p>© 2024 cars. Все права защищены.</p>
+</footer>
+
+<script>
+    function toggleMenu() {
+        document.getElementById("menu").classList.toggle("active");
+    }
+</script>
+
+</body>
+</html>

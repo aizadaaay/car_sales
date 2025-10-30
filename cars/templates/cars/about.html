@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О нас</title>
+    <style>
+        /* Общие стили */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+        header, footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            position: relative;
+        }
+        header h1 {
+            margin: 0;
+        }
+
+        /* Бургер-меню */
+        .menu-toggle {
+            display: none; /* По умолчанию скрыт */
+            font-size: 30px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+            position: absolute;
+            right: 20px;
+            top: 15px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+        nav ul li {
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Основное содержимое */
+        section {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2, h3 {
+            color: #333;
+        }
+        p, ul {
+            line-height: 1.6;
+            color: #555;
+        }
+        ul {
+            list-style-type: square;
+            margin-left: 20px;
+        }
+        .testimonial {
+            margin-top: 20px;
+            padding: 15px;
+            border-left: 4px solid #333;
+            background-color: #f1f1f1;
+            font-style: italic;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block; /* Показываем бургер-меню */
+            }
+            nav ul {
+                display: none;
+                flex-direction: column;
+                background: #222;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                text-align: center;
+                padding: 10px 0;
+            }
+            nav ul.active {
+                display: flex;
+            }
+            nav ul li {
+                padding: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>О нашей компании</h1>
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+        <nav>
+            <ul id="menu">
+                <li><a href="{% url 'home' %}">Главная</a></li>
+                <li><a href="/cars/">Каталог</a></li>
+                <li><a href="{% url 'credit_calculator' %}">Кредит</a></li>
+                <li><a href="/prediction/">Прогноз</a></li>
+                <li><a href="/about/">О нас</a></li>
+                <li><a href="/contact/">Контакты</a></li>
+                <li><a href="{% url 'add_car' %}">Добавить</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section>
+        <h2>Добро пожаловать в cars!</h2>
+        <p>Мы являемся лидером в продаже автомобилей в регионе. Наша цель - предоставить качественные автомобили по доступным ценам, а также отличный сервис для наших клиентов.</p>
+
+        <h3>Наша история</h3>
+        <p>Компания cars была основана в 2000 году и за годы работы зарекомендовала себя как надежный поставщик автомобилей. Мы начали с небольшого автосалона и сегодня имеем сеть филиалов по всему региону.</p>
+
+        <h3>Наши услуги</h3>
+        <ul>
+            <li>Продажа новых автомобилей</li>
+            <li>Продажа подержанных автомобилей</li>
+            <li>Автокредитование и рассрочка</li>
+            <li>Техническое обслуживание и ремонт автомобилей</li>
+            <li>Консультации по выбору и приобретению автомобилей</li>
+        </ul>
+
+        <h3>Отзывы наших клиентов</h3>
+        <div class="testimonial">
+            <p>"Отличный выбор автомобилей и приятное обслуживание! Помогли выбрать машину мечты!" - <strong>Aman N.</strong></p>
+        </div>
+        <div class="testimonial">
+            <p>"Благодаря Miko_cars смог приобрести автомобиль в кредит на выгодных условиях!" - <strong>Smailbek К.</strong></p>
+        </div>
+
+        <h3>Наши контакты</h3>
+        <p>Адрес: г. Алматы, проспект Достык, 50<br>
+        Телефон: +77475931619<br>
+       </p>
+
+        <p>Наша команда профессионалов всегда готова помочь вам выбрать лучший автомобиль для ваших нужд.</p>
+    </section>
+
+    <footer>
+        <p>© 2024 cars. Все права защищены.</p>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById("menu").classList.toggle("active");
+        }
+    </script>
+</body>
+</html>

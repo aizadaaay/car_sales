@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор кредита</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        h1 {
+            margin: 0;
+        }
+
+        /* Бургер-меню */
+        .menu-toggle {
+            display: none; /* Скрыто по умолчанию */
+            font-size: 30px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+        nav ul li {
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Основные стили формы */
+        .credit-calculator {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin: 10px 0 5px;
+        }
+        input, button {
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+        button {
+            background: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #555;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block; /* Показываем бургер-меню */
+            }
+            nav ul {
+                display: none;
+                flex-direction: column;
+                background: #222;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                text-align: center;
+                padding: 10px 0;
+            }
+            nav ul.active {
+                display: flex;
+            }
+            nav ul li {
+                padding: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Калькулятор кредита на автомобиль</h1>
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+        <nav>
+            <ul id="menu">
+                <li><a href="{% url 'home' %}">Главная</a></li>
+                <li><a href="/cars/">Каталог</a></li>
+                <li><a href="{% url 'credit_calculator' %}">Кредит</a></li>
+                <li><a href="/prediction/">Прогноз</a></li>
+                <li><a href="/about/">О нас</a></li>
+                <li><a href="/contact/">Контакты</a></li>
+                <li><a href="{% url 'add_car' %}">Добавить</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="credit-calculator">
+        <h2>Рассчитайте ежемесячный платеж</h2>
+
+        <form>
+            <label for="price">Цена автомобиля:</label>
+            <input type="number" id="price" name="price" required min="0" placeholder="Введите цену">
+
+            <label for="downpayment">Первоначальный взнос:</label>
+            <input type="number" id="downpayment" name="downpayment" required min="0" placeholder="Введите сумму">
+
+            <label for="rate">Процентная ставка (%):</label>
+            <input type="number" id="rate" name="rate" required min="0" max="100" placeholder="Например, 10">
+
+            <label for="period">Срок кредита (в годах):</label>
+            <input type="number" id="period" name="period" required min="1" placeholder="Введите срок кредита">
+
+            <button type="button" onclick="calculateLoan()">Рассчитать</button>
+        </form>
+
+        <div id="result">
+            <h3>Результаты расчета:</h3>
+            <p>Ежемесячный платеж: <span id="monthly-payment">0</span> $</p>
+            <p>Общая сумма кредита: <span id="total-loan">0</span> $</p>
+            <p>Переплата по кредиту: <span id="overpayment">0</span> $</p>
+        </div>
+        <p id="error-message" style="color: red;"></p>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Car Sales. Все права защищены.</p>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById("menu").classList.toggle("active");
+        }
+
+        function calculateLoan() {
+            var price = parseFloat(document.getElementById('price').value);
+            var downpayment = parseFloat(document.getElementById('downpayment').value);
+            var rate = parseFloat(document.getElementById('rate').value) / 100 / 12; // Ежемесячная ставка
+            var period = parseFloat(document.getElementById('period').value) * 12; // Переводим в месяцы
+
+            if (isNaN(price) || isNaN(downpayment) || isNaN(rate) || isNaN(period) || price <= 0 || downpayment < 0 || rate < 0 || period <= 0) {
+                document.getElementById('error-message').innerText = "Пожалуйста, заполните все поля корректно.";
+                return;
+            }
+            document.getElementById('error-message').innerText = "";
+
+            var loanAmount = price - downpayment;
+            if (loanAmount <= 0) {
+                document.getElementById('error-message').innerText = "Первоначальный взнос должен быть меньше стоимости автомобиля.";
+                return;
+            }
+
+            var monthlyPayment = (loanAmount * rate) / (1 - Math.pow(1 + rate, -period));
+            var totalLoan = monthlyPayment * period;
+            var overpayment = totalLoan - loanAmount;
+
+            document.getElementById('monthly-payment').innerText = monthlyPayment.toFixed(2);
+            document.getElementById('total-loan').innerText = totalLoan.toFixed(2);
+            document.getElementById('overpayment').innerText = overpayment.toFixed(2);
+        }
+    </script>
+
+</body>
+</html>
