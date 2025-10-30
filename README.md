@@ -12,7 +12,6 @@
 git clone https://github.com/aizadaaay/car_sales.git
 cd car_sales
 
-Копировать код
 
 Создаем и активируем виртуальное окружение:
 python -m venv venv
@@ -23,13 +22,9 @@ source venv/bin/activate
 Windows
 venv\Scripts\activate
 
-Копировать код
-
 Устанавливаем зависимости:
 pip install -r requirements.txt
 
-go
-Копировать код
 
 Настраиваем базу данных PostgreSQL в `settings.py` или через `.env`:
 DATABASES = {
@@ -40,7 +35,7 @@ ssl_require=True
 )
 }
 
-Копировать код
+
 
 Настраиваем Cloudinary для хранения медиа файлов:
 CLOUDINARY_STORAGE = {
@@ -51,22 +46,18 @@ CLOUDINARY_STORAGE = {
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 MEDIA_URL = '/media/' # для совместимости
 
-Копировать код
+
 
 Применяем миграции:
 python manage.py migrate
 
-Копировать код
 
 Создаем суперпользователя:
 python manage.py createsuperuser
 
-Копировать код
+
 
 Запускаем сервер разработки:
 python manage.py runserver
-
-cpp
-Копировать код
 
 Сайт будет доступен по адресу: http://127.0.0.1:8000/
