@@ -24,8 +24,13 @@ SECRET_KEY = 'django-insecure-y6z*hcihpfo026s)gw$^4p6j0w+ibaf#yep!hhg+hdcnilyoaz
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+import os
+import dj_database_url
 
-ALLOWED_HOSTS = ['.ngrok.io', '127.0.0.1', 'localhost','21ab-2a03-32c0-33-95f1-567-802f-5af0-eee5.ngrok-free.app']
+DEBUG = False
+ALLOWED_HOSTS = ['*']
+
+
 CSRF_TRUSTED_ORIGINS = []
 
 
@@ -51,6 +56,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
 ]
 
 ROOT_URLCONF = 'car_sales.urls'
@@ -76,17 +83,13 @@ WSGI_APPLICATION = 'car_sales.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'asdf',       # Имя вашей базы данных
-        'USER': 'postgres',           # Имя пользователя
-        'PASSWORD': '@Nurda2005',   # Пароль
-        'HOST': 'localhost',        # Хост (для локальной разработки)
-        'PORT': '5432',             # Порт PostgreSQL
-    }
+    'default': dj_database_url.config(
+        default='sqlite:///db.sqlite3',
+        conn_max_age=600
+    )
 }
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
