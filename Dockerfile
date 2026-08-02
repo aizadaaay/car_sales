@@ -17,8 +17,6 @@ COPY . .
 # Выполняем сборку статических файлов Django
 RUN python manage.py collectstatic --noinput
 
-# Выполняем миграции базы данных
-RUN python manage.py migrate
 
 # Настраиваем порт для Render
 ENV PORT 10000
